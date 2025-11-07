@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全局布局设计 - 核心知识点与学生动手任务</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #34495e;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--secondary);
+        }
+        
+        h2 {
+            color: var(--secondary);
+            margin: 25px 0 15px 0;
+            padding-left: 10px;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        h3 {
+            color: var(--dark);
+            margin: 20px 0 10px 0;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .math {
+            background-color: #fff8e1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+            font-style: italic;
+            font-size: 1.1em;
+            overflow-x: auto;
+        }
+        
+        pre {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: var(--secondary);
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .experiment-info {
+            background-color: #e8f6f3;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #2ecc71;
+        }
+        
+        .task {
+            background-color: #fef9e7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #f1c40f;
+        }
+        
+        .code-block {
+            position: relative;
+        }
+        
+        .code-header {
+            background-color: #34495e;
+            color: white;
+            padding: 8px 15px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>全局布局设计：核心知识点与学生动手任务</h1>
+        
+        <div class="section">
+            <h2>一、核心知识点详细阐述</h2>
+            
+            <div class="card">
+                <h3>1. 全局布局问题定义与目标函数</h3>
+                <p>全局布局是VLSI物理设计中的关键环节，其核心目标是在满足密度约束的前提下最小化互连线长。</p>
+                
+                <div class="math">
+                    f(x,y) = min(∑<sub>e∈E</sub> WL(e; x, y)) + λD(x, y)
+                </div>
+                
+                <p><strong>各参数详细解释：</strong></p>
+                <ul>
+                    <li><strong>WL(e; x, y)</strong>：单个网络的半周长线长（HPWL），用于快速估算布线长度</li>
+                    <li><strong>D(x, y)</strong>：密度惩罚项，确保单元在芯片区域内均匀分布</li>
+                    <li><strong>λ</strong>：权重系数，平衡线长优化与密度约束的重要性</li>
+                    <li><strong>E</strong>：电路中所有网络的集合</li>
+                    <li><strong>x, y</strong>：所有单元的位置坐标向量</li>
+                </ul>
+                
+                <p><strong>优化策略演进：</strong></p>
+                <ul>
+                    <li><strong>初期</strong>：λ值较小，主要关注线长最小化</li>
+                    <li><strong>中期</strong>：λ逐渐增大，平衡线长与密度</li>
+                    <li><strong>后期</strong>：λ较大，确保密度约束得到满足</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>2. 优化算法深度解析</h3>
+                
+                <h4>2.1 梯度下降法基础</h4>
+                <p><strong>基本原理：</strong></p>
+                <p>梯度下降法是最优化理论的基础算法，通过沿目标函数负梯度方向迭代更新参数。</p>
+                
+                <div class="math">
+                    θ<sub>t+1</sub> = θ<sub>t</sub> - α∇f(θ<sub>t</sub>)
+                </div>
+                
+                <p><strong>关键参数说明：</strong></p>
+                <ul>
+                    <li><strong>学习率α</strong>：控制每次迭代的步长大小
+                        <ul>
+                            <li>过小：收敛速度慢</li>
+                            <li>过大：可能导致振荡或发散</li>
+                        </ul>
+                    </li>
+                    <li><strong>梯度∇f(θ<sub>t</sub>)</strong>：函数在当前点的最陡上升方向</li>
+                </ul>
+                
+                <h4>2.2 Nesterov加速梯度法（NAG）</h4>
+                <p><strong>算法优势：</strong></p>
+                <ul>
+                    <li>引入动量概念，加速收敛</li>
+                    <li>减少优化过程中的振荡</li>
+                    <li>理论收敛速度达到O(1/k²)</li>
+                </ul>
+                
+                <p><strong>核心公式：</strong></p>
+                <div class="math">
+                    v<sub>t</sub> = βv<sub>t-1</sub> + (1-β)g<sub>t</sub><br>
+                    x<sub>t+1</sub> = x<sub>t</sub> - αv<sub>t</sub>
+                </div>
+                
+                <p><strong>参数物理意义：</strong></p>
+                <ul>
+                    <li><strong>动量系数β</strong>：通常取值0.9，控制历史梯度的影响程度</li>
+                    <li><strong>动量向量v<sub>t</sub></strong>：平滑后的梯度方向，减少振荡</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>3. 线长计算与梯度推导</h3>
+                
+                <h4>3.1 HPWL（半周长线长）计算</h4>
+                <p><strong>基本原理：</strong></p>
+                <p>HPWL通过计算模块边界框的半周长来快速估计线长，是布局质量的重要评估指标。</p>
+                
+                <div class="math">
+                    HPWL = ∑<sub>e∈E</sub> (max<sub>i,j∈e</sub> |x<sub>i</sub> - x<sub>j</sub>| + max<sub>i,j∈e</sub> |y<sub>i</sub> - y<sub>j</sub>|)
+                </div>
+                
+                <p><strong>实现算法：</strong></p>
+                <div class="code-block">
+                    <div class="code-header">Python实现：HPWL计算</div>
+                    <pre><code>def calculate_hpwl(nets):
+    total_wirelength = 0.0
+    for net in nets:
+        min_x = float('inf')
+        max_x = float('-inf')
+        min_y = float('inf')
+        max_y = float('-inf')
+        
+        for pin in net.pins:
+            min_x = min(min_x, pin.x)
+            max_x = max(max_x, pin.x)
+            min_y = min(min_y, pin.y)
+            max_y = max(max_y, pin.y)
+        
+        wirelength = (max_x - min_x) + (max_y - min_y)
+        total_wirelength += wirelength
+    
+    return total_wirelength</code></pre>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>二、学生动手任务：实验五 - 全局布局算法实现</h2>
+            
+            <div class="experiment-info">
+                <h3>实验基本信息</h3>
+                <ul>
+                    <li><strong>实验名称</strong>：全局布局算法实现</li>
+                    <li><strong>实验周期</strong>：2周</li>
+                    <li><strong>实验目标</strong>：掌握全局布局算法的核心原理与实现方法</li>
+                </ul>
+            </div>
+            
+            <div class="task">
+                <h3>任务一：基础布局算法实现（第一周）</h3>
+                
+                <h4>1.1 力导向布局算法实现</h4>
+                <p><strong>核心思想：</strong></p>
+                <p>模拟物理系统中的引力和斥力，实现单元的自动布局。</p>
+                
+                <p><strong>算法步骤：</strong></p>
+                <div class="code-block">
+                    <div class="code-header">Python实现：力导向布局算法</div>
+                    <pre><code>class ForceDirectedLayout:
+    def __init__(self, width, height, num_cells):
+        self.width = width
+        self.height = height
+        self.num_cells = num_cells
+        self.positions = np.random.rand(num_cells, 2) * [width, height]
+        self.velocities = np.zeros((num_cells, 2))
+        
+    def calculate_repulsive_forces(self):
+        """计算斥力：所有单元间相互排斥"""
+        repulsive_forces = np.zeros((self.num_cells, 2))
+        
+        for i in range(self.num_cells):
+            for j in range(i + 1, self.num_cells):
+                # 计算单元间距离向量
+                delta = self.positions[i] - self.positions[j]
+                distance = np.linalg.norm(delta)
+                
+                if distance > 0:
+                    # 斥力大小与距离平方成反比
+                    force_magnitude = self.repulsive_constant / (distance ** 2)
+                    force = force_magnitude * (delta / distance)
+                    repulsive_forces[i] += force
+                    repulsive_forces[j] -= force
+        
+        return repulsive_forces
+    
+    def calculate_attractive_forces(self, connectivity_matrix):
+        """计算引力：连接单元间相互吸引"""
+        attractive_forces = np.zeros((self.num_cells, 2))
+        
+        for i in range(self.num_cells):
+            for j in range(self.num_cells):
+                if connectivity_matrix[i, j] > 0:
+                    # 计算单元间距离向量
+                    delta = self.positions[j] - self.positions[i]
+                    distance = np.linalg.norm(delta)
+                    
+                    if distance > 0:
+                        # 引力大小与距离成正比（类似弹簧）
+                        force_magnitude = self.attractive_constant * distance
+                        force = force_magnitude * (delta / distance)
+                        attractive_forces[i] += force
+        
+        return attractive_forces
+    
+    def update_positions(self, connectivity_matrix, time_step=0.1):
+        """更新单元位置"""
+        # 计算合力
+        repulsive = self.calculate_repulsive_forces()
+        attractive = self.calculate_attractive_forces(connectivity_matrix)
+        total_force = repulsive + attractive
+        
+        # 更新速度（考虑阻尼）
+        self.velocities = self.damping * self.velocities + total_force * time_step
+        
+        # 更新位置
+        self.positions += self.velocities * time_step
+        
+        # 边界处理
+        self.positions[:, 0] = np.clip(self.positions[:, 0], 0, self.width)
+        self.positions[:, 1] = np.clip(self.positions[:, 1], 0, self.height)</code></pre>
+                </div>
+            </div>
+            
+            <div class="task">
+                <h3>任务二：算法优化与参数调优（第二周）</h3>
+                
+                <h4>2.1 模拟退火算法实现</h4>
+                <p><strong>核心思想：</strong></p>
+                <p>模拟退火算法通过模拟金属退火过程，在优化过程中允许接受一定程度的劣质解，避免陷入局部最优。</p>
+                
+                <div class="code-block">
+                    <div class="code-header">Python实现：模拟退火布局算法</div>
+                    <pre><code>class SimulatedAnnealingLayout:
+    def __init__(self, initial_positions, nets, width, height):
+        self.positions = initial_positions.copy()
+        self.best_positions = initial_positions.copy()
+        self.nets = nets
+        self.width = width
+        self.height = height
+        
+        # 初始温度设置
+        self.temperature = self.initial_temperature()
+        self.cooling_rate = 0.95
+        self.min_temperature = 1e-8
+        
+    def initial_temperature(self):
+        """根据初始布局的线长变化确定初始温度"""
+        initial_cost = self.cost_function(self.positions)
+        
+        # 生成一些随机扰动，观察成本变化
+        cost_changes = []
+        for _ in range(100):
+            new_positions = self.generate_neighbor()
+            new_cost = self.cost_function(new_positions)
+            cost_changes.append(abs(new_cost - initial_cost))
+        
+        # 初始温度设置为平均成本变化的倍数
+        return np.mean(cost_changes) * 10
+    
+    def cost_function(self, positions):
+        """计算布局成本：线长 + 密度惩罚"""
+        wirelength = calculate_hpwl(positions, self.nets)
+        density_penalty = calculate_density_penalty(positions, bin_size=10, target_density=0.7)
+        
+        return wirelength + 0.1 * density_penalty
+    
+    def generate_neighbor(self):
+        """生成邻域解：随机移动一个单元"""
+        new_positions = self.positions.copy()
+        
+        # 随机选择一个单元
+        cell_idx = np.random.randint(0, len(new_positions))
+        
+        # 随机移动（移动幅度随温度降低而减小）
+        max_move = self.temperature * 5
+        move = np.random.uniform(-max_move, max_move, 2)
+        
+        new_positions[cell_idx] += move
+        
+        # 边界检查
+        new_positions[cell_idx, 0] = np.clip(new_positions[cell_idx, 0], 0, self.width)
+        new_positions[cell_idx, 1] = np.clip(new_positions[cell_idx, 1], 0, self.height)
+        
+        return new_positions
+    
+    def acceptance_probability(self, old_cost, new_cost):
+        """计算接受新解的概率"""
+        if new_cost < old_cost:
+            return 1.0
+        else:
+            return np.exp(-(new_cost - old_cost) / self.temperature)
+    
+    def optimize(self, max_iterations=10000):
+        """模拟退火优化过程"""
+        current_cost = self.cost_function(self.positions)
+        best_cost = current_cost
+        
+        for iteration in range(max_iterations):
+            # 生成新解
+            new_positions = self.generate_neighbor()
+            new_cost = self.cost_function(new_positions)
+            
+            # 决定是否接受新解
+            if self.acceptance_probability(current_cost, new_cost) > np.random.random():
+                self.positions = new_positions
+                current_cost = new_cost
+                
+                # 更新最优解
+                if new_cost < best_cost:
+                    self.best_positions = new_positions.copy()
+                    best_cost = new_cost
+            
+            # 降温
+            self.temperature *= self.cooling_rate
+            
+            # 终止条件检查
+            if self.temperature < self.min_temperature:
+                break
+            
+            # 每100次迭代输出进度
+            if iteration % 100 == 0:
+                print(f"Iteration {iteration}, Temperature: {self.temperature:.6f}, "
+                      f"Cost: {current_cost:.2f}, Best: {best_cost:.2f}")
+        
+        return self.best_positions, best_cost</code></pre>
+                </div>
+            </div>
+            
+            <div class="task">
+                <h3>任务三：重叠问题处理</h3>
+                
+                <h4>3.1 重叠检测与解决</h4>
+                <p><strong>核心思想：</strong></p>
+                <p>检测布局中的单元重叠，并通过适当的移动策略解决重叠问题，确保布局的合法性。</p>
+                
+                <div class="code-block">
+                    <div class="code-header">Python实现：重叠处理</div>
+                    <pre><code>class OverlapHandler:
+    def __init__(self, cell_width, cell_height):
+        self.cell_width = cell_width
+        self.cell_height = cell_height
+    
+    def detect_overlaps(self, positions):
+        """检测单元重叠"""
+        overlaps = []
+        
+        for i in range(len(positions)):
+            for j in range(i + 1, len(positions)):
+                if self.check_overlap(positions[i], positions[j]):
+                    overlaps.append((i, j))
+        
+        return overlaps
+    
+    def check_overlap(self, pos1, pos2):
+        """检查两个单元是否重叠"""
+        # 假设单元为矩形
+        x_overlap = abs(pos1[0] - pos2[0]) < self.cell_width
+        y_overlap = abs(pos1[1] - pos2[1]) < self.cell_height
+        
+        return x_overlap and y_overlap
+    
+    def resolve_overlaps(self, positions, max_iterations=100):
+        """解决重叠问题"""
+        positions = positions.copy()
+        
+        for iteration in range(max_iterations):
+            overlaps = self.detect_overlaps(positions)
+            
+            if not overlaps:
+                break
+            
+            # 随机选择一个重叠对进行解决
+            i, j = overlaps[np.random.randint(0, len(overlaps))]
+            
+            # 计算分离向量
+            delta = positions[i] - positions[j]
+            distance = np.linalg.norm(delta)
+            
+            if distance > 0:
+                # 计算需要移动的距离
+                min_distance = np.sqrt(2) * max(self.cell_width, self.cell_height)
+                move_distance = min_distance - distance
+                
+                if move_distance > 0:
+                    # 计算移动方向
+                    direction = delta / distance
+                    
+                    # 移动单元（随机选择一个移动）
+                    if np.random.random() > 0.5:
+                        positions[i] += direction * move_distance * 0.5
+                        positions[j] -= direction * move_distance * 0.5
+                    else:
+                        # 或者使用斥力
+                        repulsion_force = direction * move_distance * 0.1
+                        positions[i] += repulsion_force
+                        positions[j] -= repulsion_force
+            
+            # 边界检查
+            positions = self.apply_boundary_constraints(positions)
+        
+        return positions
+    
+    def apply_boundary_constraints(self, positions):
+        """应用边界约束"""
+        positions[:, 0] = np.clip(positions[:, 0], 0, self.width - self.cell_width)
+        positions[:, 1] = np.clip(positions[:, 1], 0, self.height - self.cell_height)
+        return positions</code></pre>
+                </div>
+            </div>
+            
+            <div class="experiment-info">
+                <h3>实验要求与评估标准</h3>
+                
+                <h4>实验要求：</h4>
+                <ol>
+                    <li>实现力导向布局算法或模拟退火算法（二选一）</li>
+                    <li>设计参数优化策略，提高布局质量</li>
+                    <li>实现有效的重叠检测与解决方法</li>
+                    <li>对比不同参数设置下的布局效果</li>
+                </ol>
+                
+                <h4>评估指标：</h4>
+                <ol>
+                    <li><strong>线长优化效果</strong>：HPWL减少比例</li>
+                    <li><strong>密度均匀性</strong>：密度分布的标准差</li>
+                    <li><strong>算法收敛性</strong>：迭代次数与收敛速度</li>
+                    <li><strong>重叠解决效果</strong>：最终布局中的重叠单元数量</li>
+                </ol>
+                
+                <h4>实验报告要求：</h4>
+                <ol>
+                    <li>算法实现原理说明</li>
+                    <li>参数优化过程分析</li>
+                    <li>实验结果与对比分析</li>
+                    <li>遇到的问题与解决方案</li>
+                    <li>算法改进建议</li>
+                </ol>
+                
+                <p>通过这个实验，学生将深入理解全局布局算法的核心原理，掌握优化算法在实际工程中的应用，培养解决复杂工程问题的能力。</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
